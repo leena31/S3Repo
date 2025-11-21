@@ -37,7 +37,7 @@
 
         if (response.ok) {
           const data = await response.json();
-          resultEl.textContent = `Message sent! Hello ${data.query_name}, you said: "${data.query_message}"`;
+          resultEl.textContent = data;
           resultEl.style.color = "green";
         } else {
           resultEl.textContent = "Failed to send message.";
