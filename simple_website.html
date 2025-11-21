@@ -104,15 +104,42 @@
   <script>
     // Tiny client-side behaviour: accept the form and show a confirmation.
     const form = document.getElementById('contactForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = form.name.value.trim() || 'Friend';
-      const result = document.getElementById('result');
-      result.textContent = `Thanks, ${name}! We'll get back to you soon.`;
-      result.style.display = 'block';
-      // reset the form after a short delay
-      setTimeout(() => form.reset(), 400);
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value
+  };
+
+  try {
+    const response = await fetch("https://your-api-url.com/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
+
+    if (response.ok) {
+      document.getElementById('result').textContent = "Message sent successfully!";
+      document.getElementById('result').style.color = "green";
+    } else {
+      document.getElementById('result').textContent = "Failed to send message.";
+      document.getElementById('result').style.color = "red";
+    }
+    document.getElementById('result').style.display = "block";
+
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById('result').textContent = "Something went wrong.";
+    document.getElementById('result').style.color = "red";
+    document.getElementById('result').style.display = "block";
+  }
+});
+
   </script>
 </body>
 </html>
