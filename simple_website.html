@@ -1,146 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Simple HTML Website </title>
-  <style>
-    :root{--accent:#2b6cb0;--bg:#f7fafc;--card:#ffffff}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#1a202c}
-    header{background:linear-gradient(90deg,#ffffff, #f0f6ff);border-bottom:1px solid rgba(0,0,0,0.04)}
-    .container{max-width:1000px;margin:0 auto;padding:24px}
-    nav{display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
-    .nav-links a{margin-left:16px;color:var(--accent);text-decoration:none;font-weight:600}
-    main{padding:36px 0}
-    .hero{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:center}
-    .card{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.06)}
-    h1{margin:0 0 12px;font-size:28px}
-    p.lead{margin:0 0 18px;color:#4a5568}
-    form label{display:block;font-size:13px;margin-bottom:6px;color:#2d3748}
-    input,textarea,select{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px}
-    button{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer}
-    footer{padding:18px 0;color:#718096;font-size:14px;text-align:center}
-    @media (max-width:820px){.hero{grid-template-columns:1fr;}.nav-links{display:none}}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Form</title>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="brand">
-          <div class="logo">S</div>
-          <div>
-            <div style="font-weight:800">SimpleSite</div>
-            <div style="font-size:12px;color:#718096">Small static demo</div>
-          </div>
-        </div>
-        <div class="nav-links">
-          <a href="#">Home</a>
-          <a href="#features">Features</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div>
-        <div class="card">
-          <h1>Welcome — a tiny, clean HTML starter</h1>
-          <p class="lead">This page is a single-file static website you can copy and edit. It includes a header, a hero area, a small features list and a contact form that shows a friendly confirmation using JavaScript.</p>
+  <h2>Contact Form</h2>
+  <form id="contactForm">
+    <label for="name">Name:</label><br>
+    <input id="name" name="name" required placeholder="Your name"><br><br>
 
-          <h3 id="features">Features</h3>
-          <ul>
-            <li>Responsive layout using CSS grid and flexbox</li>
-            <li>Simple, readable markup and styles</li>
-            <li>Vanilla JavaScript for interactivity (no frameworks)</li>
-          </ul>
-        </div>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="4" placeholder="Your message"></textarea><br><br>
 
-        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
-          <div class="card" style="flex:1;min-width:220px"> 
-            <h4>Quick tip</h4>
-            <p style="margin:0;color:#4a5568;font-size:14px">To make this site live quickly, drop this file into any static host (GitHub Pages, Netlify) or open it locally.</p>
-          </div>
-          <div class="card" style="width:220px">
-            <h4>Why single-file?</h4>
-            <p style="margin:0;color:#4a5568;font-size:14px">Great for demos, prototypes, and interview answers.</p>
-          </div>
-        </div>
-      </div>
+    <button type="submit">Send</button>
+  </form>
 
-      <aside>
-        <div class="card">
-          <h3>Contact</h3>
-          <form id="contactForm">
-            <label for="name">Name</label>
-            <input id="name" name="name" required placeholder="Your name">
-            <label for="message" style="margin-top:10px">Message</label>
-            <textarea id="message" name="message" rows="4" placeholder="Say hi"></textarea>
+  <div id="result" style="margin-top:12px; color:green; display:none;"></div>
 
-            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-              <button type="submit">Send</button>
-            </div>
-          </form>
+  <script>
+    const form = document.getElementById('contactForm');
 
-          <div id="result" style="margin-top:12px;font-size:14px;color:#2f855a;display:none">Thanks — message received!</div>
-        </div>
-      </aside>
-    </section>
-  </main>
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  <footer>
-    <div class="container">Made with care • &copy; SimpleSite</div>
-  </footer>
+      const nameinp = form.name.value.trim();
+      const messageinp = form.message.value.trim();
 
- <script>
-const form = document.getElementById('contactForm');
+      const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${encodeURIComponent(nameinp)}&message=${encodeURIComponent(messageinp)}`;
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+      try {
+        const response = await fetch(apiUrl, { method: "GET" });
+        const resultEl = document.getElementById('result');
 
-  // Get values from the form inputs
-  const nameinp = form.name.value.trim();
-  const messageinp = form.message.value.trim();
+        if (response.ok) {
+          const data = await response.json();
+          resultEl.textContent = `Message sent! Hello ${data.query_name}, you said: "${data.query_message}"`;
+          resultEl.style.color = "green";
+        } else {
+          resultEl.textContent = "Failed to send message.";
+          resultEl.style.color = "red";
+        }
+        resultEl.style.display = "block";
 
-  // Build payload (optional)
-  const payload = { name: nameinp, message: messageinp };
-
-  // Construct URL with query parameters using backticks for template literal
-  const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${nameinp}&message=${messageinp}`;
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
+      } catch (error) {
+        console.error("Error:", error);
+        const resultEl = document.getElementById('result');
+        resultEl.textContent = "Something went wrong.";
+        resultEl.style.color = "red";
+        resultEl.style.display = "block";
       }
     });
-
-    const resultEl = document.getElementById('result');
-
-    if (response.ok) {
-      resultEl.textContent = "Message sent successfully!";
-      resultEl.style.color = "green";
-    } else {
-      resultEl.textContent = "Failed to send message.";
-      resultEl.style.color = "red";
-    }
-    resultEl.style.display = "block";
-
-  } catch (error) {
-    console.error("Error:", error);
-    const resultEl = document.getElementById('result');
-    resultEl.textContent = "Something went wrong.";
-    resultEl.style.color = "red";
-    resultEl.style.display = "block";
-  }
-});
-</script>
+  </script>
 
 </body>
 </html>
