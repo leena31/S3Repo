@@ -29,7 +29,7 @@
       const nameinp = form.name.value.trim();
       const messageinp = form.message.value.trim();
 
-      const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${encodeURIComponent(nameinp)}&message=${encodeURIComponent(messageinp)}`;
+      const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${nameinp}&message=${messageinp}`;
 
       try {
         const response = await fetch(apiUrl, { method: "GET" });
