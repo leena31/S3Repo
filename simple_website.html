@@ -12,8 +12,8 @@
     <label for="name">Name:</label><br>
     <input id="name" name="name" required placeholder="Your name"><br><br>
 
-    <label for="message">Message:</label><br>
-    <textarea id="message" name="message" rows="4" placeholder="Your message"></textarea><br><br>
+    <label for="email">Email:</label><br>
+    <textarea id="email" name="email" rows="4" placeholder="Your email"></textarea><br><br>
 
     <button type="submit">Send</button>
   </form>
@@ -27,7 +27,7 @@
       e.preventDefault();
 
       const nameinp = form.name.value.trim();
-      const messageinp = form.message.value.trim();
+      const messageinp = form.email.value.trim();
 
       const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${nameinp}&message=${messageinp}`;
 
