@@ -1,59 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Form</title>
+  <title>Submit Name & Email</title>
 </head>
 <body>
-
-  <h2>Contact Form</h2>
+  <h2>Enter your details</h2>
   <form id="contactForm">
-    <label for="name">Name:</label><br>
-    <input id="name" name="name" required placeholder="Your name"><br><br>
-
-    <label for="email">Email:</label><br>
-    <textarea id="email" name="email" rows="4" placeholder="Your email"></textarea><br><br>
-
-    <button type="submit">Send</button>
+    <input type="text" id="name" placeholder="Name" required /><br/><br/>
+    <input type="email" id="email" placeholder="Email" required /><br/><br/>
+    <button type="submit">Submit</button>
   </form>
 
-  <div id="result" style="margin-top:12px; color:green; display:none;"></div>
-
   <script>
-    const form = document.getElementById('contactForm');
+    const form = document.getElementById("contactForm");
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const nameinp = form.name.value.trim();
-      const messageinp = form.email.value.trim();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
 
-      const apiUrl = `https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs?name=${nameinp}&email=${messageinp}`;
+      const apiUrl = "https://me5g8wp6y9.execute-api.eu-west-1.amazonaws.com/default/LeenaLambdaFuncs"; // replace with your endpoint
 
       try {
-        const response = await fetch(apiUrl, { method: "GET" });
-        const resultEl = document.getElementById('result');
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, email })
+        });
 
-        if (response.ok) {
-          const data = await response.json();
-          resultEl.textContent = data;
-          resultEl.style.color = "green";
-        } else {
-          resultEl.textContent = "Failed to send message.";
-          resultEl.style.color = "red";
-        }
-        resultEl.style.display = "block";
-
-      } catch (error) {
-        console.error("Error:", error);
-        const resultEl = document.getElementById('result');
-        resultEl.textContent = "Something went wrong.";
-        resultEl.style.color = "red";
-        resultEl.style.display = "block";
+        const result = await response.json();
+        alert(result.message || "Submitted successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting data.");
       }
     });
   </script>
-
 </body>
 </html>
